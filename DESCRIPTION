@@ -9,7 +9,7 @@ Description: Identification of metabolites using high precision mass
              of sum formulae, alternatively for a given sum formula
              the theoretical isotope distribution can be calculated 
              to search in MS peak lists.
-Depends: R (>= 2.0.0), RcppClassic, Rcpp
+Depends: R (>= 2.0.0), RcppClassic
 LinkingTo: RcppClassic, Rcpp
 Suggests: RUnit
 SystemRequirements: None
