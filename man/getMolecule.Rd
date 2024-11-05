@@ -45,7 +45,8 @@ A list containing the elements `formula` (repeated sum formula),
 }
 \description{
 Parse the sum formula and calculate the theoretical exact mass 
-    and the isotope distribution for an approximate MS resolution of 20,000.
+    and the isotope distribution for an approximate MS resolution of 20,000 
+    (i.e. not providing the isotopic fine structure).
 }
 \details{
 \code{getMolecule()} will parse the sum formula and calculate the 

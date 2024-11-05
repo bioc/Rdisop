@@ -53,6 +53,9 @@ decomposeIsotopes <- function(
   if (length(masses) != length(intensities)) {
     stop("masses and intensities have different lengths!")
   }
+    
+    # de-couple 'intensities' from the calling environment to solve issue #21
+    intensities <- c(intensities, NA)[1:length(intensities)]
 
   # Calculate (average) mass difference, guess charge and recalculate
   charge <- 1
