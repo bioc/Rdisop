@@ -1,5 +1,5 @@
-#' @title CountChemicalElements.
-#' @description \code{CountChemicalElements} will split a character (chemical formula)
+#' @title .CountChemicalElements.
+#' @description \code{.CountChemicalElements} will split a character (chemical formula)
 #'  into its elements and count their occurrence.
 #' @details No testing for any chemical alphabet is performed. Elements may occur
 #'  several times and will be summed up in this case without a warning.
@@ -13,7 +13,7 @@
 #'   It is not (and should bot be) exported in Rdisop but only used internally.
 #' @noRd
 #' @keywords internal
-CountChemicalElements <- function(x = NULL, ele = NULL) {
+.CountChemicalElements <- function(x = NULL, ele = NULL) {
   # ensure character and length=1
   x <- as.character(x[1])
   # count all elements present within 'x'

@@ -3,7 +3,7 @@
 \name{getMolecule}
 \alias{getMolecule}
 \alias{getMass}
-\alias{getMono}
+\alias{getMonoisotopic}
 \alias{getIsotope}
 \alias{getFormula}
 \alias{getScore}
@@ -14,7 +14,7 @@ getMolecule(formula, elements = NULL, z = 0, maxisotopes = 10)
 
 getMass(molecule)
 
-getMono(molecule)
+getMonoisotopic(molecule)
 
 getIsotope(molecule, index)
 
@@ -52,8 +52,8 @@ Parse the sum formula and calculate the theoretical exact mass
     exact mass and the isotope distribution.
     The exact mass is the mass of the most abundant isotope and is not 
     identical with the monoisotopic mass. The latter can be extracted using 
-    the function `getMono()`. This function can also be supplied with a 
-    vector of chemical formulas directly (in case that the isotopic 
+    the function `getMonoisotopic()`. This function can also be supplied with 
+    a vector of chemical formulas directly (in case that the isotopic 
     distribution is of no interest).
     Since of version 1-65-3, if a charge is specified, the exact mass of the 
     molecule will be reduced or increased by n-times the electron mass 
