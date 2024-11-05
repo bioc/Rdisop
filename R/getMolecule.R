@@ -3,7 +3,8 @@
 #' @aliases getMass
 #' 
 #' @description Parse the sum formula and calculate the theoretical exact mass 
-#'     and the isotope distribution for an approximate MS resolution of 20,000.
+#'     and the isotope distribution for an approximate MS resolution of 20,000 
+#'     (i.e. not providing the isotopic fine structure).
 #'
 #' @param formula Sum formula.
 #' @param elements List of allowed chemical elements, defaults to full periodic system of elements.
@@ -14,8 +15,8 @@
 #'     exact mass and the isotope distribution.
 #'     The exact mass is the mass of the most abundant isotope and is not 
 #'     identical with the monoisotopic mass. The latter can be extracted using 
-#'     the function `getMono()`. This function can also be supplied with a 
-#'     vector of chemical formulas directly (in case that the isotopic 
+#'     the function `getMonoisotopic()`. This function can also be supplied with 
+#'     a vector of chemical formulas directly (in case that the isotopic 
 #'     distribution is of no interest).
 #'     Since of version 1-65-3, if a charge is specified, the exact mass of the 
 #'     molecule will be reduced or increased by n-times the electron mass 
@@ -47,6 +48,13 @@ getMolecule <- function(formula, elements = NULL, z = 0, maxisotopes=10) {
   # by mass
   element_order <- sapply(elements, function(x){ x$name })
   elements <- elements[order(sapply(elements, function(x) { x$mass }))]
+  
+  
+  # check if provided formula can be processed by `getMolecule`
+  elements_formula <- .CountChemicalElements(formula)
+  elements_parameter <- sapply(elements, function(x) { x$name })
+  stopifnot(names(elements_formula) %in% elements_parameter)
+  formula <- paste(names(elements_formula), elements_formula, collapse="", sep="")
   
   # Call imslib to parse formula and calculate
   # masses and isotope pattern
@@ -81,14 +89,14 @@ getMass <- function(molecule) {
 
 #' @rdname getMolecule
 #' @export
-getMono <- function(molecule) {
+getMonoisotopic <- function(molecule) {
     if (is.list(molecule)) {
         # assume that the user provided a list as returned by getMolecule
         molecule <- molecule$formula
     }
     # assume that the user provided a vector of chemical formulas
     sapply(molecule, function(x) {
-        ele <- CountChemicalElements(x)
+        ele <- .CountChemicalElements(x)
         sum(Rdisop::mono_masses[names(ele)]*ele)
     })
     
