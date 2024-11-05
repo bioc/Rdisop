@@ -1,6 +1,6 @@
 2024-10-18 Jan Lisec <jan.lisec@bam.de>
 
-    * Rdisop-1.65.4
+    * Rdisop-1.67.1
     * !changed `getIsotope` function to return a list of matrices to be 
       consistent with the other getter functions
     * new exported function `getMonoisotopic()` which will return the mono-isotopic mass
