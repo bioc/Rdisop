@@ -1,3 +1,9 @@
+2024-11-05 Jan Lisec <jan.lisec@bam.de>
+
+    * Rdisop-1.67.2
+    * fix for issue #21; `decomposeIsotopes` modified the object provided as
+      parameter `intensities`
+
 2024-10-18 Jan Lisec <jan.lisec@bam.de>
 
     * Rdisop-1.67.1

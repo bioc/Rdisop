@@ -1,13 +1,13 @@
 testthat::test_that(
   desc = "decomposeIsotopes can handle maxElements parameter correctly", 
   code = {
-      mz <- getMolecule("CH2")$exact
-      x <- decomposeIsotopes(masses = mz, intensities = 1, mzabs = 0.02)
-      testthat::expect_equal(x[["formula"]], c("CH2", "N"))
-      # $JL$ this should return only one result but returns 2
-      x <- decomposeIsotopes(masses = mz, intensities = 1, mzabs = 0.02, elements = initializeElements(c("C","H","N")), maxElements = "C0")
-      testthat::expect_equal(length(x[["formula"]]), 2L)
-}
+        mz <- getMolecule("CH2")$exact
+        x <- decomposeIsotopes(masses = mz, intensities = 1, mzabs = 0.02)
+        testthat::expect_equal(x[["formula"]], c("CH2", "N"))
+        # $JL$ this should return only one result but returns 2
+        x <- decomposeIsotopes(masses = mz, intensities = 1, mzabs = 0.02, elements = initializeElements(c("C","H","N")), maxElements = "C0")
+        testthat::expect_equal(length(x[["formula"]]), 2L)
+    }
 )
 
 testthat::test_that(
@@ -26,5 +26,16 @@ testthat::test_that(
         testthat::expect_equal(names(x)[1], "formula")
         testthat::expect_equal(length(x[["formula"]]), 2L)
         testthat::expect_equal(x[["formula"]], c("C5H9NO4", "C3H17P2S"))
+    }
+)
+
+testthat::test_that(
+    desc = "decomposeIsotopes does not modify the object provided as 'intensities' parameter", 
+    code = {
+        # $JL$ this ensures that the fix for issue #21 works
+        mzs <- c(147.0529, 148.0563)
+        ints <- c(100.0, 5.561173)
+        res <- decomposeIsotopes(mzs, ints)
+        testthat::expect_equal(ints, c(100.0, 5.561173))
     }
 )
