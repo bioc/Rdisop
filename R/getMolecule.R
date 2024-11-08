@@ -7,7 +7,7 @@
 #'     (i.e. not providing the isotopic fine structure).
 #'
 #' @param formula Sum formula.
-#' @param elements List of allowed chemical elements, defaults to full periodic system of elements.
+#' @param elements List of allowed chemical elements, defaults to full periodic system of elements. See \code{\link{initializeElements}}.
 #' @param z Charge z of molecule for exact mass calculation.
 #' @param maxisotopes Maximum number of isotopes shown for the resulting molecule.
 #'
@@ -38,44 +38,42 @@
 #' @references For a description of the underlying IMS see citation("Rdisop")
 #' 
 getMolecule <- function(formula, elements = NULL, z = 0, maxisotopes=10) {
-  # Use full PSE unless stated otherwise
-  if (!is.list(elements) || length(elements)==0 ) {
-    elements <- initializePSE()
-  }
+    
+    # Use full PSE unless stated otherwise
+    if (!is.list(elements) || length(elements)==0 ) { elements <- initializePSE() }
+    
+    .check_maxisotopes(maxisotopes)
   
-  # Remember ordering of element names,
-  # but ensure list of elements is ordered
-  # by mass
-  element_order <- sapply(elements, function(x){ x$name })
-  elements <- elements[order(sapply(elements, function(x) { x$mass }))]
+    # Remember ordering of element names, but ensure list of elements is ordered by mass
+    element_order <- sapply(elements, function(x){ x$name })
+    elements <- elements[order(sapply(elements, function(x) { x$mass }))]
+    
+    # check if provided formula can be processed by `getMolecule`
+    elements_formula <- .CountChemicalElements(formula)
+    elements_parameter <- sapply(elements, function(x) { x$name })
+    stopifnot(names(elements_formula) %in% elements_parameter)
+    formula <- paste(names(elements_formula), elements_formula, collapse="", sep="")
+    
+    # Call imslib to parse formula and calculate masses and isotope pattern
+    molecule <- .Call(
+        "getMolecule",
+        formula, elements, element_order, z, maxisotopes, 
+        PACKAGE="Rdisop"
+    )
   
-  
-  # check if provided formula can be processed by `getMolecule`
-  elements_formula <- .CountChemicalElements(formula)
-  elements_parameter <- sapply(elements, function(x) { x$name })
-  stopifnot(names(elements_formula) %in% elements_parameter)
-  formula <- paste(names(elements_formula), elements_formula, collapse="", sep="")
-  
-  # Call imslib to parse formula and calculate
-  # masses and isotope pattern
-  molecule <- .Call("getMolecule",
-                    formula, elements, element_order,
-                    z, maxisotopes,
-                    PACKAGE="Rdisop")
-  
-  # the charge parameter is not correctly used within C++ imslib to calculate
-  # appropriate deviations in exactmass and isotopes info
-  # to solve this the result is postprocessed here
-  if (z!=0) {
-      # JL: I would keep this message to inform previous users of Rdisop regarding
-      # the modification but remove it in the future (i.e. in 1 year, so 10/2025).
-      message("You specified a charge z different from 0. Please read the details part of the documentation.")
-      molecule[["exactmass"]] <- (molecule[["exactmass"]] - z * 0.00054858)/abs(z)
-      molecule[["isotopes"]] <- lapply(molecule[["isotopes"]], function(y) { 
-          y[1,] <- (y[1,] - z * 0.00054858)/abs(z) 
-          y
-      }) 
-  }
+    # the charge parameter is not correctly used within C++ imslib to calculate
+    # appropriate deviations in exactmass and isotopes info
+    # to solve this the result is post processed here
+    if (z!=0) {
+        # JL: I would keep this message to inform previous users of Rdisop regarding
+        # the modification but remove it in the future (i.e. in 1 year, so 10/2025).
+        message("You specified a charge z different from 0. Please read the details part of the documentation.")
+        molecule[["exactmass"]] <- (molecule[["exactmass"]] - z * 0.00054858)/abs(z)
+        molecule[["isotopes"]] <- lapply(molecule[["isotopes"]], function(y) { 
+            y[1,] <- (y[1,] - z * 0.00054858)/abs(z) 
+            y
+        }) 
+    }
   
   molecule
 }

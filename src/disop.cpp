@@ -142,7 +142,8 @@ bool isWithinElementRange(const ComposedElement& molecule, const ComposedElement
     int count = static_cast<int>(molecule.getElementAbundance((it->first).getName()));
     
     // TODO: Fails e.g. for "C2N0" 
-    if (maxcount>0 && count > maxcount) {
+    // JL: I fixed this error by changing "maxcount > 0" to "maxcount >= 0"; however this operator is only available for C++ >20 so it might not compile on old systems
+    if (maxcount >= 0 && count > maxcount) {
       return false;
     }
   }
