@@ -57,5 +57,18 @@
 #' @keywords internal
 .check_maxisotopes <- function(x) {
     if (!(is.numeric(x) && x>=1 && x<=100)) stop("maxisotopes is not a number within the allowed range (1..100)")
-    x
+    return(x)
+}
+
+#' @title .minset_elements.
+#' @description \code{.minset_elements} will check the formula parameter in various
+#'     functions and return a minimal elements list to perform the functions
+#'     calculations on this formula.
+#' @param fml formula parameter.
+#' @return The output of \code{\link{initializeElements}} required to process this formula.
+#' @noRd
+#' @keywords internal
+.minset_elements <- function(fml) {
+    x <- names(.CountChemicalElements(fml))
+    return(initializeElements(x))
 }

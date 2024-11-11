@@ -2,7 +2,7 @@
 #' @title Add/subtract sum formulas
 #' @aliases subMolecules
 #' 
-#' @description Simple arithmetic modifications of sum formulae.
+#' @description Simple arithmetic modifications of sum formulas.
 #'
 #' @param formula1 Sum formula (can be a vector).
 #' @param formula2 Sum formula.
@@ -12,12 +12,14 @@
 #' @details `addMolecules` adds the second argument to the first. `subMolecules`
 #'    subtracts the second argument from the first. This can be useful to revert
 #'    e.g. adduct/fragment formation found in ESI mass spectrometry, or to 
-#'    mimick simple chemical reactions. No chemical checks are performed.
+#'    mimic simple chemical reactions. No chemical checks are performed.
 #'
-#' @return The input vector formula1 either amended or reduced by formula2.
+#' @return The input vector formula1 will be converted into molecule objects similar
+#'     to function \code{\link{getMolecule}}. However, the results will be amended 
+#'     or reduced by formula2.
 #'
 #' @examples
-#' # Remove the proton-Adduct from Ethanol
+#' # Remove the proton-adduct from Ethanol
 #' subMolecules("C2H7O", "H")
 #' 
 #' @export
@@ -27,8 +29,8 @@ addMolecules <- function(
     # First argument may be vector of formulas, Second is single molecule only!
     if (length(formula2) > 1) { stop("Second formula must be single Molecule") }
     
-    # Use full PSE unless stated otherwise
-    if (!is.list(elements) || length(elements) == 0) { elements <- initializePSE() }
+    # Use the minimal set of the PSE unless stated otherwise
+    if (!is.list(elements) || length(elements) == 0) { elements <- .minset_elements(paste0(formula1, formula2)) }
     
     maxisotopes <- .check_maxisotopes(maxisotopes)
   
@@ -52,9 +54,9 @@ subMolecules <- function(
     # First argument may be vector of formulas, second is single molecule only!
     if (length(formula2) > 1) { stop("Second formula must be single Molecule") }
     
-    # Use full PSE unless stated otherwise
-    if (!is.list(elements) || length(elements) == 0) { elements <- initializePSE() }
-  
+    # Use the minimal set of the PSE unless stated otherwise
+    if (!is.list(elements) || length(elements) == 0) { elements <- .minset_elements(paste0(formula1, formula2)) }
+    
     maxisotopes <- .check_maxisotopes(maxisotopes)
     
     # Remember ordering of element names, but ensure list of elements is ordered by mass

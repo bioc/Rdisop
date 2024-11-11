@@ -39,8 +39,8 @@
 #' 
 getMolecule <- function(formula, elements = NULL, z = 0, maxisotopes=10) {
     
-    # Use full PSE unless stated otherwise
-    if (!is.list(elements) || length(elements)==0 ) { elements <- initializePSE() }
+    # Use the minimal set of the PSE unless stated otherwise
+    if (!is.list(elements) || length(elements) == 0) { elements <- .minset_elements(formula) }
     
     .check_maxisotopes(maxisotopes)
   
