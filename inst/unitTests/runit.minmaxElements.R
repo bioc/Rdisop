@@ -78,7 +78,7 @@ test.minmaxElements5 <- function() {
 }
 
 
-#Zeros in maxElements are ignored and do not cause an error
+#Zeros in maxElements are respected and do not cause an error
 test.minmaxElements6 <- function() {
   
   elem <-  initializeElements(c("C","H","N","O","P"))
@@ -86,7 +86,7 @@ test.minmaxElements6 <- function() {
   
   res <- decomposeMass(testmass, ppm = 5,  mzabs = 0, elements = elem, minElements = "C6", maxElements = "P0")   
   
-  checkEquals(res$formula[order(abs(res$exactmass - testmass))],c("C6H34N6O3P", "C10H31N5O3", "C12H33N2O4", "C7H45OP4", "C8H36N3O4P"))
+  checkEquals(res$formula[order(abs(res$exactmass - testmass))],c("C10H31N5O3", "C12H33N2O4"))
 }
 
 #more complex exammple:

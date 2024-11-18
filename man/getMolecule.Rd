@@ -27,7 +27,7 @@ getValid(molecule)
 \arguments{
 \item{formula}{Sum formula.}
 
-\item{elements}{List of allowed chemical elements, defaults to full periodic system of elements.}
+\item{elements}{List of allowed chemical elements, defaults to full periodic system of elements. See \code{\link{initializeElements}}.}
 
 \item{z}{Charge z of molecule for exact mass calculation.}
 

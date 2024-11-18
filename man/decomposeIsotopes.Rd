@@ -31,14 +31,7 @@ decomposeMass(
   maxElements = "C999999"
 )
 
-isotopeScore(
-  molecule,
-  masses,
-  intensities,
-  elements = NULL,
-  filter = NULL,
-  z = 0
-)
+isotopeScore(molecule, masses, intensities)
 }
 \arguments{
 \item{masses}{A vector of masses (or m/z values) of an isotope cluster.}
@@ -49,7 +42,7 @@ isotopeScore(
 
 \item{mzabs}{Absolute deviation in Dalton (mzabs and ppm will be added).}
 
-\item{elements}{List of allowed chemical elements, defaults to CHNOPS.}
+\item{elements}{List of allowed chemical elements, defaults to CHNOPS. See \code{\link{initializeElements}}.}
 
 \item{filter}{NYI, will be a selection of DU, DBE and Nitrogen rules.}
 
@@ -57,13 +50,13 @@ isotopeScore(
 
 \item{maxisotopes}{Maximum number of isotopes shown in the resulting molecules.}
 
-\item{minElements}{Molecular formulas, which contain lower and upper boundaries of allowed formula respectively.}
+\item{minElements}{Molecular formula, defining lower boundaries of allowed elements.}
 
-\item{maxElements}{Molecular formulas, which contain lower and upper boundaries of allowed formula respectively.}
+\item{maxElements}{Molecular formula, defining upper boundaries of allowed elements.}
 
 \item{mass}{A single mass (or m/z value).}
 
-\item{molecule}{An initialized molecule as returned by getMolecule() or the decomposeMass() and decomposeIsotope() functions.}
+\item{molecule}{An initialized molecule as returned by getMolecule() or the decomposeMass() and decomposeIsotopes() functions.}
 }
 \value{
 A list of molecules, which contain the sub-lists `formulas` potential 
@@ -71,15 +64,33 @@ A list of molecules, which contain the sub-lists `formulas` potential
     `score` calculated score, `isotopes` a list of isotopes.
 }
 \description{
-Calculate the elementary compositions from an exact Mass or
-    Isotope Pattern, obtained e.g. by FTICR or TOF mass spectrometers.
+Calculate the elementary compositions from an exact mass or
+    isotope pattern, obtained e.g. by FTICR or TOF mass spectrometers.
 }
 \details{
 Sum formulas are calculated which explain the given mass or isotope pattern.
 }
 \examples{
-# Glutamate: 
-decomposeIsotopes(c(147.0529, 148.0563), c(100.0, 5.56))
+# query some measurement values from a Glutamate peak which will return two
+# suggested/potential sum formulas
+m <- c(147.0529, 148.0563, 149.0612)
+i <- c(0.91, 0.06, 0.01)
+mol <- decomposeIsotopes(m, i, maxisotopes = 3)
+getFormula(mol)
+
+# Rdisop returns the scores (how well does the exact data match the measured 
+# data) in a normalized fashion, but you can calculate the raw scores
+getScore(mol)
+isotopeScore(mol, m, i)
+
+# using a 5 mDa window, the number of potential candidates is increased to 26
+getFormula(decomposeIsotopes(m, i, mzabs = 0.005))
+
+# elemental ranges can be specified to affect the result
+# use maxElements to exclude all of the above suggestions containing more 
+# than one S and/or one P.
+getFormula(decomposeIsotopes(m, i, mzabs = 0.005, maxElements = "S1P1"))
+
 
 }
 \references{

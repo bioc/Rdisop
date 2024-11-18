@@ -1,3 +1,21 @@
+2024-11-08 Jan Lisec <jan.lisec@bam.de>
+
+    * Rdisop-1.67.3
+    * fix for issue #20; a wrongly specified `maxisotopes` parameter will not 
+      crash R but return an error instead
+    * fix for issue #12 and issue #5; `decomposeIsotopes` help section now better 
+      explains how to define elemental limits specified via `minElements` and 
+      `maxElements`
+    * `maxElements`does respect now an upper limit of zero (basically another way
+      to exclude elements, which could be achieved before only by not defining the
+      element in the first place, which caused trouble for CHNOPS elements which 
+      are always expected by disop.cpp)
+    * fix for issue #1; `getMolecule` and `addMolecules` do check the elements of
+      the provided formulas now and use only the minimal required elemental set
+      to process the result. This prevents crashes that happend when the full PSE
+      was initialized due to problems with atoms having exatly 7 isotopes in their 
+      definition.
+
 2024-11-05 Jan Lisec <jan.lisec@bam.de>
 
     * Rdisop-1.67.2

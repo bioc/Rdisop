@@ -3,34 +3,37 @@
 \name{addMolecules}
 \alias{addMolecules}
 \alias{subMolecules}
-\title{Add/subtract sum formulae}
+\title{Add/subtract sum formulas}
 \usage{
 addMolecules(formula1, formula2, elements = NULL, maxisotopes = 10)
 
 subMolecules(formula1, formula2, elements = NULL, maxisotopes = 10)
 }
 \arguments{
-\item{formula1}{Sum formula.}
+\item{formula1}{Sum formula (can be a vector).}
 
 \item{formula2}{Sum formula.}
 
-\item{elements}{list of allowed chemical elements, defaults to full periodic system of elements.}
+\item{elements}{List of allowed chemical elements, defaults to full periodic system of elements. See \code{\link{initializeElements}}.}
 
-\item{maxisotopes}{maximum number of isotopes shown in the resulting molecules.}
+\item{maxisotopes}{Maximum number of isotopes shown in the resulting molecules.}
 }
 \value{
-The input vector formula1 either amended or reduced by formula2.
+The input vector formula1 will be converted into molecule objects similar
+    to function \code{\link{getMolecule}}. However, the results will be amended 
+    or reduced by formula2.
 }
 \description{
-Simple arithmetic modifications of sum formulae.
+Simple arithmetic modifications of sum formulas.
 }
 \details{
 `addMolecules` adds the second argument to the first. `subMolecules`
    subtracts the second argument from the first. This can be useful to revert
    e.g. adduct/fragment formation found in ESI mass spectrometry, or to 
-   mimick simple chemical reactions. No chemical checks are performed.#'
+   mimic simple chemical reactions. No chemical checks are performed.
 }
 \examples{
-# Remove the proton-Adduct from Ethanol
+# Remove the proton-adduct from Ethanol
 subMolecules("C2H7O", "H")
+
 }
