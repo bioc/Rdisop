@@ -46,8 +46,6 @@ void MarkovSequenceGeneratorTest::testGetSequence() {
 	for(size_t i=0; i<alphabet.size(); i++){
 		std::vector<double> p;
 		for(size_t n=0; n<alphabet.size(); n++){
-		    // 2024-11-18 rand() statements substituted by Rcpp equivalents
-			// p.push_back((double(rand())/RAND_MAX));
 			p.push_back(R::runif(0,1));
 		}
 		

@@ -1,5 +1,10 @@
 2024-11-08 Jan Lisec <jan.lisec@bam.de>
 
+    * Rdisop-1.67.4
+    * fix for issue #33; use R based random number calls in a CRAN approved way.
+
+2024-11-08 Jan Lisec <jan.lisec@bam.de>
+
     * Rdisop-1.67.3
     * fix for issue #20; a wrongly specified `maxisotopes` parameter will not 
       crash R but return an error instead

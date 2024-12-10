@@ -36,10 +36,7 @@ Distribution::Distribution(std::vector<double> dist): p(dist), size(p.size()) {
 * Get a random number.
 */
 size_t Distribution::getRand(){
-    // 2024-11-18 rand() statements substituted by Rcpp equivalents
-	// size_t i = (size_t)( rand()/(RAND_MAX+1.0)*size );
-	// double r = (double(rand())/RAND_MAX);
-	size_t i = (size_t)( R::runif(0,0.999999)*size );
+    size_t i = (size_t)( R::runif(0,0.999999)*size );
     double r = (R::runif(0,1));
     
 	if(p[i] < r){
